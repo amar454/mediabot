@@ -1,3 +1,4 @@
+
 import discord
 from discord import member
 from discord.ext import commands
@@ -181,6 +182,5 @@ async def delete(ctx, filename):
         except FileNotFoundError:
             await ctx.send('err: That file does not exist')
 
-                     
 
 client.run('key')
