@@ -21,6 +21,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+
+# Recommended permissions integer: 271649808
+
 import discord
 from discord import member
 from discord.ext import commands
@@ -30,13 +33,11 @@ import time
 from datetime import datetime
 import random
 import os
-from gtts import gTTS
 import platform
 import asyncio
 import subprocess
 import sys
 import random 
-from sympy import false
 from pytube.exceptions import AgeRestrictedError
 from discord.utils import get
 from discord import FFmpegPCMAudio
@@ -97,7 +98,7 @@ async def on_ready():
     await client.change_presence(activity=discord.Game(name=open_bot_data()["prefix"]))
 @client.event
 async def on_member_join(ctx):
-    print(f"{ctx} has joined the server ")
+    print(f"{ctx} has joined the server :)")
 @client.event
 async def on_member_leave(ctx):
     print(f"{ctx} has left the server :(")    
@@ -142,7 +143,7 @@ async def play(ctx, filename):
         voice = await channel.connect()
     source = FFmpegPCMAudio(f"mp3s/{filename}")
     player = voice.play(source) 
-    log_command('restart', ctx.author, 0)   
+    log_command('play', ctx.author, 0)   
 @client.command()
 async def playyt(ctx, link, name):
     '''Downloads the audio from youtube link then saves it into a new song in the local saved'''
@@ -171,38 +172,45 @@ async def pause(ctx):
     '''Pause player'''
     vc = get(client.voice_clients, guild=ctx.guild)
     vc.pause()
+    log_command('pause', ctx.author, 0)
     return 
 @client.command()
 async def resume(ctx):
     '''Resume player'''
     vc = get(client.voice_clients, guild=ctx.guild)
     vc.resume()
+    log_command('resume', ctx.author, 0)
     return 
 @client.command()
 async def listsongs(ctx):
     '''List locally saved songs'''
     data = ''
     for f in os.listdir('mp3s/'):
-        data += f'{f}\n'
+        data += f'- {f}\n'
     await ctx.send(data)
     return 
+    log_command('listsongs', ctx.author, 0)
 @client.command()
 async def killplayer(ctx):
     '''Kill player'''
     voice = get(client.voice_clients, guild=ctx.guild)
     voice.cleanup()
     voice.disconnect()
+    log_command('killplayer', ctx.author, 0)
     return 
 @client.command()
 async def delete(ctx, filename):
     if "Owner" not in '{0.author.roles}'.format(ctx.message):
-        await ctx.send("err:")
+        await ctx.send("err: You do not have the proper roles to use this command")
+        log_command('delete', ctx.author, -1)
     else:
         try:
             os.remove(f'mp3s/{filename}')
             await ctx.send(f'mp3s/{filename} has been nuked')
+            log_command('delete', ctx.author, 0)
         except FileNotFoundError:
             await ctx.send('err: That file does not exist')
+            log_command('delete', ctx.author, -2)
 
 
 client.run('key')
