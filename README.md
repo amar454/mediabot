@@ -29,7 +29,7 @@ A simple, easy to configure, and minimal Discord bot with
 
 3. Install dependencies with `pip install -r requirements.txt`.
 
-4. If bot_data.json doesn't exist, create it using `touch 
+4. If bot_data.json doesn't exist, create it using `touch bot_data.json`, edit it using whatever text editor you want, and paste this: 
 
 ```json
 {
